@@ -1,0 +1,196 @@
+Build a mobile-first food ordering frontend inspired by the attached coffee-shop UI references, but do NOT copy them directly. Create a dark OLED-friendly neon orange/white interface for a burger/drinks/snacks shop.
+
+Tech stack:
+- HTML
+- CSS
+- Tailwind CSS via CDN
+- Vanilla JavaScript
+- Lucide icons
+- Three.js for subtle liquid/click effects
+- Minor inline SVG where useful
+- No React, no Vue, no build step
+- Must deploy easily on Vercel, Cloudflare Pages, Netlify, or Hugging Face Space static frontend
+
+Backend API target:
+const API_BASE = "https://shinhati2023-zontzend.hf.space";
+
+Also keep this reference link in comments:
+Hugging Face regular Space page:
+https://huggingface.co/spaces/Shinhati2023/zontzend
+
+Core visual style:
+- OLED black background: #000000 / #030303
+- Neon orange primary: #ff7a00 / #ff8c1a
+- Warm white text: #fff7ed
+- Glassmorphism cards with faint orange borders
+- Soft neon glow, but not too heavy
+- Modern mobile app layout
+- Rounded cards and pill buttons
+- Bottom navigation with Lucide icons
+- Product grid similar to the reference images
+- Search bar with filter icon
+- Category pills: Burgers, Drinks, Fries, Snacks, Desserts
+- Floating home/cart button
+- Smooth animations
+- Every item click should trigger a small “liquid ripple” effect using Three.js or canvas fallback
+- Add a subtle cloth/wave scroll effect at the top hero area using Three.js: a low-poly waving cloth/ribbon made of orange glowing mesh lines, very lightweight and mobile-friendly
+
+Pages/sections:
+1. Splash / boot screen
+   - Black screen
+   - Neon orange terminal text
+   - Text:
+     “TREY FOOD SHELL”
+     “BIG”
+     “BETTER”
+     “BEST”
+     “We live for Burgers.”
+   - Then reveal the app
+
+2. Home/shop screen
+   - Greeting
+   - Hero card with promo text:
+     “Hot Burgers. Cold Drinks. Zero Stress.”
+   - Search input
+   - Category tabs
+   - Product grid
+   - Each product has:
+     image
+     name
+     category
+     price
+     heart/favorite icon
+     add button
+   - Use real remote images for burgers, drinks, fries, cake/dessert.
+   - Images can come from Unsplash images or direct royalty-free image URLs.
+   - Use image alt text properly.
+
+3. Cart screen
+   - Show selected items
+   - Quantity controls
+   - Remove item
+   - Subtotal
+   - Delivery fee
+   - Total
+   - Promo code input
+   - Dummy checkout button
+   - Checkout should simulate payment only:
+     show modal “Payment simulated successfully”
+     do not process real payment
+     clear cart or mark order as completed
+
+4. CMS/Admin screen
+   - Protected visually by a simple local admin toggle or admin PIN for demo only
+   - CMS allows adding/editing/deleting products from the frontend
+   - Fields:
+     name
+     type/category
+     price
+     image URL
+     description
+     availability
+      edit of all items and price, etc
+   - Save products to localStorage for frontend demo
+   - Also prepare functions to POST to backend:
+     POST `${API_BASE}/api/products`
+     GET `${API_BASE}/api/products`
+     PUT `${API_BASE}/api/products/:id`
+     DELETE `${API_BASE}/api/products/:id`
+   - Include these API functions in JavaScript but fallback to localStorage if backend endpoint does not exist yet.
+
+5. Product types
+   Include starter product data:
+   - Flame Burger
+   - Double Cheese Burger
+   - Crispy Chicken Burger
+   - Orange Neon Soda
+   - Iced Coffee
+   - Mango Drink
+   - Loaded Fries
+   - Onion Rings
+   - Chocolate Cake
+   - Vanilla Cup
+
+Lucide icons:
+Use:
+- menu
+- search
+- sliders-horizontal
+- shopping-cart
+- heart
+- home
+- user
+- wallet
+- gift
+- burger
+- cup-soda
+- Cocktails 
+- ice-cream
+- plus
+- minus
+- trash-2
+- edit
+- save
+- x
+- shield-check
+- database
+- server
+
+Files to generate:
+- index.html
+- style.css
+- app.js
+
+Requirements:
+- Mobile-first layout, but works on desktop
+- No npm build required
+- Tailwind CDN in index.html
+- Lucide via CDN:
+  <script src="https://unpkg.com/lucide@latest"></script>
+- Three.js via CDN:
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+- Use CSS variables for theme colors
+- Store cart in localStorage
+- Store CMS products in localStorage
+- API_BASE must be clearly defined at the top of app.js:
+  const API_BASE = "https://shinhati2023-zontzend.hf.space";
+- Include a health check call:
+  fetch(`${API_BASE}/health`)
+- Show backend status in the UI:
+  “Backend Online” or “Backend Sleeping/Waking”
+- Do not expose any secrets in frontend code
+- JWT token should be read from localStorage only:
+  const token = localStorage.getItem("jwt");
+- Requests to protected backend endpoints should send:
+  Authorization: `Bearer ${token}`
+
+Interaction details:
+- Product card click:
+  animate liquid ripple
+  slightly scale card
+  add to cart if add button clicked
+- Category click:
+  filter products
+- Search:
+  filter by product name/category
+- Cart:
+  update totals live
+- Dummy payment:
+  modal animation with Lucide shield-check icon
+  message:
+  “Payment simulated. No real charge made.”
+- CMS:
+  add product instantly to shop grid
+  edit/delete products
+  export/import product JSON
+
+Design copy:
+- App name: Trey's Burgers
+- Main slogan: “We live for Burgers.”
+- Hero text: “Burgers, drinks and late-night fuel — served from the shell.”
+- Checkout button text: “Make Payment”
+- Admin panel title: “Burgers CMS”
+- Backend status label: “QTH”
+
+Use clean code with comments.
+Make it feel premium, fast, dark, neon, and mobile-native.

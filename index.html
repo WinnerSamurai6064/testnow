@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Trey Burgers — We live for Burgers.</title>
+  <meta name="theme-color" content="#000000" />
+
+  <!-- Tailwind CSS CDN -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons CDN -->
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Three.js CDN -->
+
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
+  <!-- Google Fonts: Syne + Space Mono + Plus Jakarta Sans -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- App stylesheet -->
+
+  <link rel="stylesheet" href="style.css" />
+
+  <script>
+    // Tailwind dark config
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            orange: { neon: '#ff7a00', light: '#ff8c1a', soft: '#ff9a3c' },
+            bg: { deep: '#000000', card: '#0a0a0a', surface: '#111111', border: '#1a1a1a' }
+          }
+        }
+      }
+    }
+  </script>
+
+</head>
+<body class="dark bg-black text-white overflow-x-hidden">
+
+  <!-- ===================== SPLASH SCREEN ===================== -->
+
+  <div id="splash-screen">
+    <canvas id="splash-canvas"></canvas>
+    <div id="splash-content">
+      <div id="splash-terminal">
+        <div class="terminal-line" id="tl1">
+          <span class="terminal-prompt">$ </span>
+          <span class="terminal-text" data-text="TREY FOOD SHELL"></span>
+          <span class="terminal-cursor">_</span>
+        </div>
+        <div class="terminal-line hidden" id="tl2">
+          <span class="terminal-prompt">&gt; </span>
+          <span class="terminal-text big-text" data-text="BIG"></span>
+        </div>
+        <div class="terminal-line hidden" id="tl3">
+          <span class="terminal-prompt">&gt; </span>
+          <span class="terminal-text big-text" data-text="BETTER"></span>
+        </div>
+        <div class="terminal-line hidden" id="tl4">
+          <span class="terminal-prompt">&gt; </span>
+          <span class="terminal-text big-text" data-text="BEST"></span>
+        </div>
+        <div class="terminal-line hidden" id="tl5">
+          <span class="terminal-text slogan-text" data-text="We live for Burgers."></span>
+        </div>
+      </div>
+      <button id="enter-btn" class="hidden">
+        <span>Enter App</span>
+        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== MAIN APP ===================== -->
+
+  <div id="app" class="hidden">
+
+```
+<!-- Three.js Hero Canvas -->
+<canvas id="hero-canvas"></canvas>
+
+<!-- ===================== HOME SCREEN ===================== -->
+<div id="screen-home" class="screen active">
+
+  <!-- Top Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <button class="icon-btn" id="menu-btn">
+        <i data-lucide="menu"></i>
+      </button>
+      <div class="greeting-block">
+        <span class="greeting-sub">Good Evening,</span>
+        <span class="greeting-name">Hungry Human 🔥</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="backend-status" id="backend-status">
+        <span class="status-dot"></span>
+        <span class="status-text">ATH Company</span>
+      </div>
+      <button class="icon-btn cart-btn" id="cart-icon-btn">
+        <i data-lucide="shopping-cart"></i>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Scrollable Content -->
+  <div class="screen-scroll">
+
+    <!-- Hero Card -->
+    <div class="hero-card">
+      <div class="hero-card-inner">
+        <div class="hero-text">
+          <span class="hero-tag">🔥 Limited Drop</span>
+          <h1 class="hero-title">Hot Burgers.<br/>Cold Drinks.<br/>Zero Stress.</h1>
+          <p class="hero-sub">Burgers, drinks and late-night fuel —<br/>served from the shell.</p>
+          <button class="hero-cta" onclick="scrollToProducts()">
+            Order Now <i data-lucide="arrow-right" class="w-4 h-4 inline ml-1"></i>
+          </button>
+        </div>
+        <div class="hero-image">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&q=80" alt="Flame burger hero" />
+        </div>
+      </div>
+      <div class="hero-glow"></div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <i data-lucide="search" class="search-icon"></i>
+      <input type="text" id="search-input" placeholder="Search burgers, drinks..." />
+      <button class="filter-btn">
+        <i data-lucide="sliders-horizontal"></i>
+      </button>
+    </div>
+
+    <!-- Category Pills -->
+    <div class="category-pills" id="category-pills">
+      <button class="pill active" data-cat="All">
+        <i data-lucide="home" class="w-4 h-4"></i> All
+      </button>
+      <button class="pill" data-cat="Burgers">
+        <i data-lucide="beef" class="w-4 h-4"></i> Burgers
+      </button>
+      <button class="pill" data-cat="Drinks">
+        <i data-lucide="cup-soda" class="w-4 h-4"></i> Drinks
+      </button>
+      <button class="pill" data-cat="Fries">
+        <span>🍟</span> Fries
+      </button>
+      <button class="pill" data-cat="Snacks">
+        <span>🧅</span> Snacks
+      </button>
+      <button class="pill" data-cat="Desserts">
+        <i data-lucide="ice-cream" class="w-4 h-4"></i> Desserts
+      </button>
+    </div>
+
+    <!-- Product Section Label -->
+    <div class="section-header">
+      <h2 class="section-title" id="section-title">All Items</h2>
+      <span class="section-count" id="section-count">10 items</span>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="product-grid">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Bottom spacer for nav -->
+    <div style="height: 100px;"></div>
+
+  </div><!-- end screen-scroll -->
+</div><!-- end screen-home -->
+
+<!-- ===================== CART SCREEN ===================== -->
+<div id="screen-cart" class="screen">
+  <header class="app-header">
+    <div class="header-left">
+      <button class="icon-btn" onclick="showScreen('home')">
+        <i data-lucide="arrow-left"></i>
+      </button>
+      <span class="screen-title">Your Cart</span>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" id="clear-cart-btn" title="Clear cart">
+        <i data-lucide="trash-2"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="screen-scroll">
+    <div id="cart-items-list">
+      <!-- Populated by JS -->
+    </div>
+    <div id="cart-empty" class="cart-empty hidden">
+      <div class="empty-icon">🍔</div>
+      <p>Your cart is empty.<br/>Add something delicious!</p>
+      <button class="pill active mt-4" onclick="showScreen('home')">Browse Menu</button>
+    </div>
+
+    <!-- Order Summary -->
+    <div id="cart-summary" class="cart-summary hidden">
+      <!-- Promo Code -->
+      <div class="promo-row">
+        <i data-lucide="gift" class="text-orange-400 w-5 h-5 flex-shrink-0"></i>
+        <input type="text" id="promo-input" placeholder="Enter promo code" class="promo-input" />
+        <button class="promo-btn" id="promo-apply-btn">Apply</button>
+      </div>
+
+      <div class="summary-lines">
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <span id="subtotal-val">$0.00</span>
+        </div>
+        <div class="summary-line">
+          <span>Delivery Fee</span>
+          <span id="delivery-val">$2.00</span>
+        </div>
+        <div class="summary-line discount-line hidden" id="discount-line">
+          <span>Promo Discount</span>
+          <span id="discount-val" class="text-orange-400">-$0.00</span>
+        </div>
+        <div class="summary-line total-line">
+          <span>Total</span>
+          <span id="total-val">$2.00</span>
+        </div>
+      </div>
+
+      <button class="checkout-btn" id="checkout-btn">
+        <i data-lucide="wallet" class="w-5 h-5"></i>
+        Payment Network
+      </button>
+    </div>
+
+    <div style="height: 100px;"></div>
+  </div>
+</div><!-- end screen-cart -->
+
+<!-- ===================== PROFILE/ACCOUNT SCREEN ===================== -->
+<div id="screen-profile" class="screen">
+  <header class="app-header">
+    <div class="header-left">
+      <span class="screen-title">Account</span>
+    </div>
+  </header>
+  <div class="screen-scroll" style="padding:24px 16px;">
+    <div class="profile-card">
+      <div class="profile-avatar">🧑‍🍳</div>
+      <h2 class="text-xl font-bold text-white mt-3">Hungry Human</h2>
+      <p class="text-sm text-gray-400 mt-1">guest@treyburgers.com</p>
+      <div class="profile-stats">
+        <div class="stat-box">
+          <span class="stat-num" id="order-count">0</span>
+          <span class="stat-label">Orders</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="fav-count">0</span>
+          <span class="stat-label">Favorites</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-list">
+      <button class="menu-item" onclick="showScreen('admin')">
+        <i data-lucide="database" class="w-5 h-5 text-orange-400"></i>
+        <span>CMS Admin Panel</span>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500 ml-auto"></i>
+      </button>
+      <button class="menu-item" id="export-btn">
+        <i data-lucide="server" class="w-5 h-5 text-orange-400"></i>
+        <span>Export Products JSON</span>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500 ml-auto"></i>
+      </button>
+      <button class="menu-item" id="import-btn-trigger">
+        <i data-lucide="upload" class="w-5 h-5 text-orange-400"></i>
+        <span>Import Products JSON</span>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500 ml-auto"></i>
+      </button>
+      <input type="file" id="import-file-input" accept=".json" class="hidden" />
+    </div>
+
+    <div style="height:100px;"></div>
+  </div>
+</div>
+
+<!-- ===================== CMS/ADMIN SCREEN ===================== -->
+<div id="screen-admin" class="screen">
+  <header class="app-header">
+    <div class="header-left">
+      <button class="icon-btn" onclick="showScreen('profile')">
+        <i data-lucide="arrow-left"></i>
+      </button>
+      <span class="screen-title">Burgers CMS</span>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn text-orange-400" id="cms-add-btn">
+        <i data-lucide="plus"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- PIN Gate -->
+  <div id="admin-pin-gate" class="pin-gate">
+    <div class="pin-card">
+      <i data-lucide="shield-check" class="w-12 h-12 text-orange-400 mx-auto mb-4"></i>
+      <h3 class="text-lg font-bold text-center mb-1">Admin Access</h3>
+      <p class="text-sm text-gray-400 text-center mb-6">Enter PIN to continue</p>
+      <div class="pin-dots" id="pin-dots">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="pin-grid">
+        <button class="pin-key" data-val="1">1</button>
+        <button class="pin-key" data-val="2">2</button>
+        <button class="pin-key" data-val="3">3</button>
+        <button class="pin-key" data-val="4">4</button>
+        <button class="pin-key" data-val="5">5</button>
+        <button class="pin-key" data-val="6">6</button>
+        <button class="pin-key" data-val="7">7</button>
+        <button class="pin-key" data-val="8">8</button>
+        <button class="pin-key" data-val="9">9</button>
+        <button class="pin-key pin-clear" data-val="clear">⌫</button>
+        <button class="pin-key" data-val="0">0</button>
+        <button class="pin-key pin-ok" data-val="ok">OK</button>
+      </div>
+      <p class="text-xs text-gray-600 text-center mt-4">Demo PIN: 1234</p>
+    </div>
+  </div>
+
+  <!-- CMS Content -->
+  <div id="admin-content" class="hidden screen-scroll" style="padding-bottom:100px;">
+    <div id="cms-product-list" class="cms-list">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div><!-- end screen-admin -->
+
+<!-- ===================== BOTTOM NAV ===================== -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="nav-btn active" data-screen="home">
+    <i data-lucide="home"></i>
+    <span>Home</span>
+  </button>
+  <button class="nav-btn" data-screen="cart">
+    <i data-lucide="shopping-cart"></i>
+    <span>Cart</span>
+    <span class="cart-badge-nav" id="cart-badge-nav">0</span>
+  </button>
+  <button class="nav-btn" data-screen="profile">
+    <i data-lucide="user"></i>
+    <span>Profile</span>
+  </button>
+</nav>
+
+<!-- ===================== PRODUCT DETAIL MODAL ===================== -->
+<div id="product-modal" class="modal-overlay hidden">
+  <div class="modal-card" id="product-modal-card">
+    <button class="modal-close" id="modal-close-btn">
+      <i data-lucide="x"></i>
+    </button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ===================== CMS PRODUCT FORM MODAL ===================== -->
+<div id="cms-modal" class="modal-overlay hidden">
+  <div class="modal-card cms-modal-card">
+    <button class="modal-close" id="cms-modal-close">
+      <i data-lucide="x"></i>
+    </button>
+    <h3 class="text-lg font-bold mb-5" id="cms-modal-title">Add Product</h3>
+    <div class="cms-form">
+      <input type="hidden" id="cms-edit-id" />
+      <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" id="cms-name" placeholder="e.g. Flame Burger" />
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="cms-category">
+          <option value="Burgers">Burgers</option>
+          <option value="Drinks">Drinks</option>
+          <option value="Fries">Fries</option>
+          <option value="Snacks">Snacks</option>
+          <option value="Desserts">Desserts</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Price ($)</label>
+        <input type="number" id="cms-price" placeholder="9.99" step="0.01" min="0" />
+      </div>
+      <div class="form-group">
+        <label>Image URL</label>
+        <input type="text" id="cms-image" placeholder="https://..." />
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="cms-desc" placeholder="Short description..."></textarea>
+      </div>
+      <div class="form-group toggle-group">
+        <label>Available</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="cms-available" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="form-actions">
+        <button class="btn-ghost" id="cms-cancel-btn">Cancel</button>
+        <button class="btn-primary" id="cms-save-btn">
+          <i data-lucide="save" class="w-4 h-4"></i> Save Product
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAYMENT SUCCESS MODAL ===================== -->
+<div id="payment-modal" class="modal-overlay hidden">
+  <div class="modal-card payment-card">
+    <div class="payment-icon">
+      <i data-lucide="shield-check" class="w-16 h-16 text-orange-400"></i>
+    </div>
+    <h2 class="text-2xl font-bold mt-4 text-center">Payment Simulated!</h2>
+    <p class="text-gray-400 text-center mt-2 text-sm">No real charge made.<br/>Payment. Network.......</p>
+    <div class="payment-receipt" id="payment-receipt"></div>
+    <button class="checkout-btn mt-6" id="payment-done-btn">
+      Back to Menu
+    </button>
+  </div>
+</div>
+
+<!-- ===================== RIPPLE CANVAS (overlay) ===================== -->
+<canvas id="ripple-canvas"></canvas>
+```
+
+  </div><!-- end #app -->
+
+  <!-- App JS -->
+
+  <script src="app.js"></script>
+
+</body>
+</html>
